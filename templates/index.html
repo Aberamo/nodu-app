@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NODU.ME - Dashboard</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/images/logo.ico') }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- MathJax Configuration (MUST be before loading MathJax) -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady();
+                }
+            }
+        };
+    </script>
+
+    <!-- MathJax 3 for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <a href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='assets/images/logo.svg') }}"
+                         alt="NODU.ME Logo" class="brand-logo">
+                </a>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" id="nav-home">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Home</span>
+            </a>
+
+            <a href="#" class="nav-item" id="nav-profile">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Profilo</span>
+            </a>
+
+            <a href="#" class="nav-item" id="nav-history">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                <span>Storico</span>
+            </a>
+
+            <a href="#" class="nav-item" id="nav-settings">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6m5.196-15.196l-4.242 4.242m0 5.908l-4.242 4.242m15.196-5.196l-6 0m-6 0l-6 0m15.196 5.196l-4.242-4.242m0-5.908l-4.242-4.242"></path>
+                </svg>
+                <span>Impostazioni</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="{{ url_for('logout') }}" class="nav-item logout-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- VIEW 1: Dashboard Home (Tutor Selection) -->
+        <div class="view-container" id="dashboardView">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="greeting">
+                    <div class="greeting-content">
+                        <h1>Ciao, <span class="user-name">{{ username }}</span></h1>
+                        <p class="subtitle">Pronto per iniziare il tuo percorso di apprendimento?</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <a href="{{ url_for('home') }}" class="btn-home" title="Torna al Sito">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </a>
+                    <button class="btn-notification">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </button>
+                    <!-- User Avatar -->
+                    {% if is_logged_in %}
+                        <img src="https://ui-avatars.com/api/?name={{ username }}&background=random&color=fff&size=128"
+                             alt="Avatar di {{ username }}"
+                             class="user-avatar">
+                    {% else %}
+                        <div class="user-avatar guest-avatar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                    {% endif %}
+                </div>
+            </header>
+
+            <!-- Tutor Selection Section -->
+            <section class="tutor-section">
+                <h2 class="section-title">Scegli il tuo Tutor AI</h2>
+                <p class="section-description">Seleziona l'assistente più adatto alle tue esigenze di apprendimento</p>
+
+                <div class="tutor-grid">
+                    <!-- Tutor Generale -->
+                    <div class="tutor-card" data-tutor="generale">
+                        <div class="tutor-icon generale">
+                            <img src="{{ url_for('static', filename='assets/images/mascotte_verde.svg') }}"
+                                 alt="Tutor Generale" class="tutor-mascot">
+                        </div>
+                        <div class="tutor-content">
+                            <h3 class="tutor-title">Tutor Generale</h3>
+                            <p class="tutor-description">Organizzazione e Supporto completo per il tuo studio quotidiano</p>
+                            <div class="tutor-features">
+                                <span class="feature-tag">Pianificazione</span>
+                                <span class="feature-tag">Metodo di Studio</span>
+                                <span class="feature-tag">Motivazione</span>
+                            </div>
+                        </div>
+                        <div class="tutor-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Area Scientifica -->
+                    <div class="tutor-card" data-tutor="scientifica">
+                        <div class="tutor-icon scientifica">
+                            <img src="{{ url_for('static', filename='assets/images/mascotte_blu.svg') }}"
+                                 alt="Tutor Scientifico" class="tutor-mascot">
+                        </div>
+                        <div class="tutor-content">
+                            <h3 class="tutor-title">Area Scientifica</h3>
+                            <p class="tutor-description">Rigore logico e Formule per matematica, fisica e scienze</p>
+                            <div class="tutor-features">
+                                <span class="feature-tag">Matematica</span>
+                                <span class="feature-tag">Fisica</span>
+                                <span class="feature-tag">Logica</span>
+                            </div>
+                        </div>
+                        <div class="tutor-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Area Umanistica -->
+                    <div class="tutor-card" data-tutor="umanistica">
+                        <div class="tutor-icon umanistica">
+                            <img src="{{ url_for('static', filename='assets/images/mascotte_arancione.svg') }}"
+                                 alt="Tutor Umanistico" class="tutor-mascot">
+                        </div>
+                        <div class="tutor-content">
+                            <h3 class="tutor-title">Area Umanistica</h3>
+                            <p class="tutor-description">Connessioni e Argomentazione per letteratura, storia e filosofia</p>
+                            <div class="tutor-features">
+                                <span class="feature-tag">Letteratura</span>
+                                <span class="feature-tag">Storia</span>
+                                <span class="feature-tag">Filosofia</span>
+                            </div>
+                        </div>
+                        <div class="tutor-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 2: Fullscreen Chat -->
+        <div class="view-container" id="chatView" style="display: none;">
+            <!-- Chat Header with Back Button -->
+            <header class="chat-view-header">
+                <button class="btn-back" id="backBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                    </svg>
+                    <span>Indietro</span>
+                </button>
+                <div class="chat-view-tutor-info">
+                    <div class="chat-view-avatar" id="chatViewAvatar"></div>
+                    <div>
+                        <h2 class="chat-view-tutor-name" id="chatViewTutorName">Tutor AI</h2>
+                        <p class="chat-view-status">Online</p>
+                    </div>
+                </div>
+                <div class="header-spacer"></div>
+            </header>
+
+            <!-- Chat Messages Area -->
+            <div class="chat-view-messages" id="chatMessages">
+                <!-- Messages will be inserted here dynamically -->
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="chat-view-input">
+                <!-- File Preview (shown when file is selected) -->
+                <div class="image-preview-container" id="imagePreviewContainer" style="display: none;">
+                    <div class="image-preview-wrapper">
+                        <!-- Image preview (for images) -->
+                        <img id="imagePreview" src="" alt="Preview" class="image-preview" style="display: none;">
+
+                        <!-- PDF preview (for PDFs) -->
+                        <div id="pdfPreview" class="pdf-preview" style="display: none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="pdf-icon">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <text x="12" y="16" font-size="6" text-anchor="middle" fill="currentColor">PDF</text>
+                            </svg>
+                            <span id="pdfFileName" class="pdf-file-name">documento.pdf</span>
+                        </div>
+
+                        <button class="btn-remove-image" id="removeImageBtn" title="Rimuovi file">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-input-wrapper">
+                    <!-- Hidden file input -->
+                    <input type="file" id="imageInput" accept="image/*,application/pdf" style="display: none;">
+
+                    <!-- Attach button (paperclip icon) -->
+                    <button class="btn-attach" id="attachBtn" title="Allega file (immagine o PDF)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        </svg>
+                    </button>
+
+                    <textarea
+                        id="chatInput"
+                        class="chat-input"
+                        placeholder="Scrivi il tuo messaggio..."
+                        rows="1"></textarea>
+
+                    <button class="btn-send" id="sendBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: Profile (Hidden by default) -->
+        <div class="view-container" id="profileView" style="display: none;">
+            <header class="dashboard-header">
+                <h1>Il Mio Profilo</h1>
+            </header>
+            <div class="profile-content" style="padding: 2rem;">
+                <div class="profile-card" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem; max-width: 600px;">
+                    <h2 style="color: #fff; margin-bottom: 1.5rem;">Informazioni Utente</h2>
+                    <div style="margin-bottom: 1rem;">
+                        <strong style="color: rgba(255,255,255,0.7);">Username:</strong>
+                        <span style="color: #fff; margin-left: 0.5rem;">{{ username }}</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <strong style="color: rgba(255,255,255,0.7);">Account creato:</strong>
+                        <span style="color: #fff; margin-left: 0.5rem;">Oggi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: History (Hidden by default) -->
+        <div class="view-container" id="historyView" style="display: none;">
+            <header class="dashboard-header">
+                <h1>Cronologia Chat</h1>
+            </header>
+            <div class="history-content" style="padding: 2rem;">
+                <div id="historyList" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- History items will be inserted here by JavaScript -->
+                    <p style="color: rgba(255,255,255,0.5);">Caricamento cronologia...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 5: Settings (Hidden by default) -->
+        <div class="view-container" id="settingsView" style="display: none;">
+            <header class="dashboard-header">
+                <h1>Impostazioni</h1>
+            </header>
+            <div class="settings-content" style="padding: 2rem;">
+                <div class="settings-card" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem; max-width: 600px;">
+                    <h2 style="color: #fff; margin-bottom: 1.5rem;">Impostazioni Account</h2>
+                    <p style="color: rgba(255,255,255,0.7);">Funzionalità in arrivo...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Background Effects -->
+    <div class="bg-gradient gradient-1"></div>
+    <div class="bg-gradient gradient-2"></div>
+    <div class="bg-gradient gradient-3"></div>
+
+    <!-- Login Status for JavaScript -->
+    <script>
+        const IS_USER_LOGGED_IN = {{ 'true' if is_logged_in else 'false' }};
+        const USERNAME = "{{ username }}";
+    </script>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NODU.ME - Il Tuo Tutor AI Personale</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/images/logo.ico') }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-blue: #00d4ff;
+            --neon-orange: #ff6b35;
+            --dark-bg: #0a0e1a;
+            --dark-card: #131829;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Background Gradients */
+        .bg-gradient {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .gradient-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--neon-green);
+            top: -300px;
+            left: -200px;
+        }
+
+        .gradient-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--neon-blue);
+            bottom: -200px;
+            right: -150px;
+        }
+
+        .gradient-3 {
+            width: 400px;
+            height: 400px;
+            background: var(--neon-orange);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Sticky Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 80px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .brand-logo {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .logo-text {
+            color: #fff;
+        }
+
+        .logo-accent {
+            background: linear-gradient(135deg, var(--neon-green) 0%, #00cc6a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--neon-green);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-green);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--neon-green) 0%, #00cc6a 100%);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 5%;
+            padding-top: calc(4rem + 80px); /* Account for fixed navbar */
+            overflow: hidden;
+        }
+
+        /* Hero Content Wrapper */
+        .hero-content {
+            position: relative;
+            z-index: 15;
+            max-width: 900px;
+            padding-top: 180px; /* Ridotto per avvicinare il titolo */
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Mascotte Animate */
+        .mascot {
+            position: absolute;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0.9;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Mascotte Verde - Centro Sopra Titolo */
+        .mascot-green {
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: clamp(140px, 16vw, 220px);
+            height: auto;
+            animation: float-gentle 3s ease-in-out infinite;
+        }
+
+        /* Mascotte Blu - Sinistra (Posizionamento dal centro) */
+        .mascot-blue {
+            top: 40%;
+            left: calc(50% - 380px);
+            transform: translateY(-50%);
+            width: clamp(140px, 15vw, 220px);
+            height: auto;
+            animation: float-gentle 4s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+
+        /* Mascotte Arancione - Destra (Posizionamento dal centro) */
+        .mascot-orange {
+            top: 45%;
+            right: calc(50% - 380px);
+            transform: translateY(-50%);
+            width: clamp(140px, 15vw, 220px);
+            height: auto;
+            animation: float-gentle 3.5s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        /* Animazione Float Gentile */
+        @keyframes float-gentle {
+            0%, 100% {
+                transform: translateY(-50%) translateX(0);
+            }
+            50% {
+                transform: translateY(-50%) translateX(0) translateY(-15px);
+            }
+        }
+
+        /* Fix per mascotte verde (centro) */
+        @keyframes float-gentle-center {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-15px);
+            }
+        }
+
+        .mascot-green {
+            animation: float-gentle-center 3s ease-in-out infinite;
+        }
+
+        .cta-button {
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--neon-green) 0%, #00cc6a 100%);
+            color: #000;
+            border-radius: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Features Section */
+        .features {
+            position: relative;
+            z-index: 10;
+            padding: 5rem 5% 8rem 5%;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 4rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-green);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card:nth-child(1) .feature-icon {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            color: #000;
+        }
+
+        .feature-card:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #000;
+        }
+
+        .feature-card:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff4500 100%);
+            color: #000;
+        }
+
+        .feature-mascot {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 10;
+            background: rgba(10, 14, 26, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 5% 2rem 5%;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .footer-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .brand-logo {
+                height: 45px;
+            }
+
+            .navbar-container {
+                flex-direction: column;
+                gap: 1rem;
+                min-height: 65px;
+            }
+
+            .hero h1 {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero {
+                padding: 2rem 2%;
+            }
+
+            /* Mobile - Nasconde mascotte laterali */
+            .mascot-blue,
+            .mascot-orange {
+                display: none;
+            }
+
+            /* Hero - Fix layout mobile */
+            .hero {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            /* Mascotte verde - Layout relativo per mobile */
+            .mascot-green {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                display: block;
+                margin: 0 auto 20px auto;
+                width: 140px;
+                animation: float-gentle-mobile 3s ease-in-out infinite;
+            }
+
+            /* Animazione mobile semplificata */
+            @keyframes float-gentle-mobile {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+
+            .hero-content {
+                padding-top: 0;
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-gradient gradient-1"></div>
+    <div class="bg-gradient gradient-2"></div>
+    <div class="bg-gradient gradient-3"></div>
+
+    <!-- Sticky Header Navbar -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='assets/images/logo.svg') }}" alt="NODU.ME Logo" class="brand-logo">
+            </div>
+
+            <nav class="nav-links">
+                <a href="{{ url_for('how_it_works') }}" class="nav-link">Come Funziona</a>
+                <a href="{{ url_for('pricing') }}" class="nav-link">Prezzi</a>
+                <a href="{{ url_for('feedback') }}" class="nav-link">Feedback</a>
+            </nav>
+
+            <div class="header-buttons">
+                {% if is_authenticated %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Vai alla Dashboard</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-secondary">Accedi</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary">Registrati</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Mascotte Animate -->
+        <img src="{{ url_for('static', filename='assets/images/mascotte_verde.svg') }}"
+             alt="Tutor Generale"
+             class="mascot mascot-green">
+
+        <img src="{{ url_for('static', filename='assets/images/mascotte_blu.svg') }}"
+             alt="Tutor Scientifico"
+             class="mascot mascot-blue">
+
+        <img src="{{ url_for('static', filename='assets/images/mascotte_arancione.svg') }}"
+             alt="Tutor Umanistico"
+             class="mascot mascot-orange">
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h1>
+                Il Tuo <span class="highlight">Tutor AI</span><br>Personale
+            </h1>
+            <p>
+                Smetti di studiare da solo. Inizia a studiare meglio.<br>
+                Con NODU.ME hai 3 tutor AI sempre disponibili, specializzati per ogni materia.
+            </p>
+            <a href="{{ url_for('dashboard') }}" class="cta-button">
+                Inizia Ora
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2>I Tuoi 3 Tutor AI</h2>
+        <div class="features-grid">
+            <!-- Tutor Generale -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="{{ url_for('static', filename='assets/images/mascotte_verde.svg') }}"
+                         alt="Tutor Generale" class="feature-mascot">
+                </div>
+                <h3>Tutor Generale</h3>
+                <p>
+                    Il tuo coach personale per organizzazione, motivazione e pianificazione dello studio.
+                    Parla come un fratello maggiore, senza paroloni, con consigli pratici e immediati.
+                </p>
+            </div>
+
+            <!-- Tutor Scientifico -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="{{ url_for('static', filename='assets/images/mascotte_blu.svg') }}"
+                         alt="Tutor Scientifico" class="feature-mascot">
+                </div>
+                <h3>Area Scientifica</h3>
+                <p>
+                    Matematica, Fisica, Chimica? Ti guida passo-passo con metodo socratico.
+                    Non ti dà la soluzione, ti insegna a ragionare. Linguaggio semplice, esempi visivi.
+                </p>
+            </div>
+
+            <!-- Tutor Umanistico -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="{{ url_for('static', filename='assets/images/mascotte_arancione.svg') }}"
+                         alt="Tutor Umanistico" class="feature-mascot">
+                </div>
+                <h3>Area Umanistica</h3>
+                <p>
+                    Storia, Letteratura, Filosofia raccontate come storie appassionanti.
+                    Collegamenti con serie TV, canzoni, vita reale. Schemi chiari, niente muri di testo.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section (Placeholder) -->
+    <section class="pricing-section" id="pricing">
+        <div style="text-align: center; padding: 5rem 5%;">
+            <h2 style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.5rem; color: #fff;">Prezzi</h2>
+            <p style="color: rgba(255,255,255,0.7); font-size: 1.2rem;">Completamente gratuito durante la fase beta!</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3 class="footer-title">NODU<span style="color: var(--neon-green);">.ME</span></h3>
+                <p class="footer-description">
+                    La piattaforma educativa AI che rivoluziona il modo di studiare.
+                    Tre tutor specializzati sempre al tuo fianco.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-subtitle">Link Rapidi</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('how_it_works') }}">Come Funziona</a></li>
+                    <li><a href="{{ url_for('pricing') }}">Prezzi</a></li>
+                    <li><a href="{{ url_for('login') }}">Accedi</a></li>
+                    <li><a href="{{ url_for('feedback') }}">Feedback</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-subtitle">Contatti</h4>
+                <ul class="footer-links">
+                    <li>Email: info@nodu.me</li>
+                    <li>Supporto: supporto@nodu.me</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 NODU.ME - Tutti i diritti riservati</p>
+        </div>
+    </footer>
+</body>
+</html>

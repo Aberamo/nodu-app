@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(move dashboardindex.html templatesindex.html)",
+      "Bash(move:*)",
+      "Bash(chmod:*)",
+      "Bash(tree:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}
