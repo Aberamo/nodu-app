@@ -1,18 +1,18 @@
+
 # 🎓 NODU.ME - Master Project Log
 
 ## ℹ️ Visione del Progetto
-Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane.
-**Obiettivo:** Simulare un professore privato 24/7.
-**Nome:** NODU.ME
-**Struttura:** 3 Interfacce (Tutor Generale, Area Scientifica, Area Umanistica).
+Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane. **Obiettivo**: Simulare un professore privato 24/7 meglio di qualsiasi competitor. 
+**Nome**: NODU-APP.ME URL: https://nodu-app.me 
+**Struttura**: 3 Interfacce (Tutor Generale, Area Scientifica, Area Umanistica).
 
-## 🛠 Tech Stack (Aggiornato)
-- **Frontend:** HTML5, CSS3, JavaScript (Vanilla).
-- **Backend:** Python (Flask).
-- **Struttura:** Standard Flask (`/templates` per HTML, `/static` per CSS/JS).
-- **AI Engine:** In attesa di integrazione (DeepSeek/OpenAI).
-- **Hosting/Tools:** GitHub Student Developer Pack, VSC.
-
+# 🛠 Tech Stack (Produzione)
+**Frontend**: HTML5, CSS3 (Glassmorphism), JavaScript (Vanilla).
+**Backend**: Python (Flask) su Gunicorn.
+**Database**: PostgreSQL (Render Managed) [Prod] / SQLite [Dev].
+**AI Engine**: Google Gemini (gemini-1.5-flash).
+**Hosting**: Render.com (Web Service).
+**Architecture**: Jinja2 Templating (base.html inheritance).
 ---
 
 ## 📅 Roadmap Aggiornata
@@ -27,6 +27,23 @@ Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane.
 [x] Fase 7: Fullstack Core - Database, Auth, History.
 [x] Fase 8: Deploy Finale (Render.com + Custom Domain). 🚀
 [x] Milestone: Il sito è accessibile pubblicamente e sicuro.
+
+
+## 🚀 V 1.1 - The "Sticky" Update (IN CORSO)
+**Obiettivo: Migliorare la UX mobile e aggiungere funzioni che incollano l'utente allo schermo.**
+[x] Mobile UX Revolution: Implementazione Hamburger Menu, fix z-index click, Chat Interface stile "WhatsApp" (Input Pill, Header pulito).
+
+[x] Code Refactoring: Creazione base.html per header/footer universali.
+
+[ ] Google OAuth: Login rapido "Continua con Google".
+
+[ ] Export Appunti: Pulsante per scaricare la chat come PDF.
+
+[ ] Dark Mode Toggle: Switch Chiaro/Scuro.
+
+[ ] Streaming Response: Effetto "macchina da scrivere" fluido per le risposte AI.
+
+
 
 ## 📝 Changelog & Stato Attuale
 
@@ -78,8 +95,6 @@ Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane.
 - **Feature:** Cronologia Chat persistente. Ricaricando la pagina, i messaggi precedenti vengono caricati dal DB.
 - **Stato:** Pronto per il Deploy. Tutte le funzionalità core (Chat, Vision, PDF, Auth) sono implementate.
 
-## 📝 Changelog & Stato Attuale
-
 **[DATA ODIE] - UI REFINEMENT & NAVIGATION**
 - **Sidebar:** Navigazione funzionante (Home, Profilo, Storico, Settings). Implementato View Switching in JS.
 - **Views:** Create viste nascoste per Profilo e Storico che appaiono al click.
@@ -87,7 +102,6 @@ Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane.
 - **Issue:** API Quota (429) limita i test estensivi, ma il frontend è pronto.
 - **Goal:** Implementare "Guest Mode" per permettere l'uso senza registrazione obbligatoria.
 
-## 📝 Changelog & Stato Attuale
 
 **[02/01/2026 ore 16:30] - PRE-DEPLOY POLISH**
 - **Refactoring UI:** Trasformazione in sito Multi-pagina (Prezzi, Come Funziona).
@@ -99,8 +113,6 @@ Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane.
     - Hardening Registrazione (Email obbligatoria, Conferma Password).
 - **Next Step:** Integrazione Google OAuth e Deploy su Render.
 
-## 📝 Changelog & Stato Attuale
-
 **[02/01/2026 ore 17:00] - PRE-DEPLOY FINAL POLISH**
 - **Decision:** Google Login posticipato alla v1.1.
 - **Header:** Ottimizzazione aggressiva dell'altezza (Logo ridimensionato temporaneamente).
@@ -110,50 +122,67 @@ Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane.
 - **Registration:** Aggiunti campi Email (required) e Conferma Password.
 - **Stato:** Codice pronto per il Deploy su Render.
 
-[02/01/2026 ore 17:00] - PRE-DEPLOY FINAL POLISH
-
+**[02/01/2026 ore 17:00] - PRE-DEPLOY FINAL POLISH**
 Header: Ottimizzazione aggressiva dell'altezza (Logo ridimensionato).
-
 Mobile UX: Implementazione "Hamburger Menu" (Sidebar a scomparsa).
-
 Registration: Hardening (Email obbligatoria, check password).
 
-[02/01/2026 ore 18:30] - FEEDBACK LOOP & LINUX PREP
-
+**[02/01/2026 ore 18:30] - FEEDBACK LOOP & LINUX PREP**
 Feature Feedback: Creata pagina feedback.html collegata a Formspree per ricevere email senza backend SMTP.
-
 Header: Aggiunto link "Feedback" nella Navbar pubblica.
-
 System Prep:
-
 Creato Procfile per Gunicorn.
-
 Pulizia requirements.txt: Rimosse librerie Windows-only (pywin32, pyinstaller) per compatibilità server Linux.
-
 Update app.py: Switch automatico Database (SQLite se locale, PostgreSQL se su Render).
 
-[02/01/2026 ore 19:50] - DEPLOY SU RENDER (SUCCESS)
-
+**[02/01/2026 ore 19:50] - DEPLOY SU RENDER (SUCCESS)**
 Infrastructure:
-
 Creato Database PostgreSQL (Frankfurt).
-
 Creato Web Service Python 3 collegato a GitHub (Aberamo/nodu-app).
-
-Environment: Configurate variabili DATABASE_URL, GEMINI_API_KEY, SECRET_KEY.
-
+Environmnt: Configurate variabili DATABASE_URL, GEMINI_API_KEY, SECRET_KEY.
 Database Init: Aggirato blocco Shell Free Tier tramite route temporanea /setup-database-segreto per creare le tabelle, poi rimossa per sicurezza.
-
 Status: Deploy completato con successo. App funzionante in cloud.
 
-[02/01/2026 ore 20:00] - DOMAIN & SSL (LIVE)
-
+**[02/01/2026 ore 20:00] - DOMAIN & SSL (LIVE)**
 Domain: Acquistato/Riscatto nodu-app.me su Namecheap.
-
 DNS: Configuarati record A e CNAME per puntare a Render.
-
-Verification: Render ha verificato la proprietà del dominio.
-
+Verfication: Render ha verificato la proprietà del dominio.
 Security: Certificato SSL (HTTPS) in fase di generazione automatica (Let's Encrypt).
 
-Stato Finale: V 1.0 ONLINE 🟢
+*Stato Finale: V 1.0 ONLINE 🟢*
+
+
+## 📝 Changelog & Storia (Recente)
+**[02/01/2026 ore 19:50] - DEPLOY SU RENDER (SUCCESS V1.0)**
+Infrastructure: Database PostgreSQL e Web Service attivi.
+Domain: Configurato nodu-app.me con SSL/HTTPS automatico.
+Status: Deploy completato. App funzionante in cloud.
+
+**[02/01/2026 ore 21:00] - ARCHITECTURE REFACTORING**
+Tech Upgrade: Introdotto il sistema di template inheritance di Jinja2.
+File base.html: Creato template master contenente Header, Footer e scripts comuni.
+Clean Code: Rimosso codice duplicato da landing.html, dashboard.html, pricing.html. Ora le pagine contengono solo il loro contenuto specifico.
+Navigation: Logica dell'Hamburger Menu centralizzata in un unico file.
+
+**[02/01/2026 ore 22:30] - MOBILE UX POLISH (WhatsApp Style)**
+Header Mobile:
+Layout "Ancorato a sinistra" (Indietro > Avatar > Nome).
+Rimossi elementi di distrazione (pallini di stato, menu hamburger dentro la chat).
+Effetto "Ghost" semitrasparente con backdrop-filter.
+Input Bar (Mobile):
+Design "Unibody": Creata pillola grigio scura che racchiude graffetta e testo.
+Tasto Invio separato, rotondo e verde.
+Allineamento pixel-perfect (Flexbox) e micro-interazioni (scale effect).
+General Fixes:
+Mascotte Landing Page riposizionata per non coprire il testo su mobile.
+Risolto bug critico "Click Bloccati" sulla Dashboard (z-index fix).
+
+**[02/01/2026 ore 23:00] - DESKTOP OPTIMIZATION**
+Chat Desktop:
+Input area centrata (max-width: 800px) e "flottante".
+Messaggi limitati al 70% di larghezza per migliorare la leggibilità.
+UI Details:
+Scrollbar personalizzata (sottile e scura) per Chrome e Firefox.
+Integrazione visuale coerente tra Mobile e Desktop.
+
+*STATO ATTUALE: 🟢 V 1.1 (UX Stable) Il sito è responsive, professionale e pronto per l'implementazione delle feature di engagement (Google Login, PDF Export).*
