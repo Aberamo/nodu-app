@@ -166,9 +166,10 @@ body {
     transition: all 0.3s ease;
     color: var(--text-primary);
     position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
+    top: 1rem;
+    left: 1rem;
     z-index: 150;
+    pointer-events: auto;
 }
 
 .mobile-menu-toggle:hover {
@@ -308,6 +309,8 @@ body {
     align-items: center;
     margin-bottom: 3rem;
     padding: 1.5rem 0;
+    position: relative;
+    z-index: 2;
 }
 
 .greeting h1 {
@@ -434,6 +437,9 @@ body {
     overflow: hidden;
     display: flex;
     gap: 1.25rem;
+    z-index: 1;
+    pointer-events: auto;
+    touch-action: manipulation;
 }
 
 .tutor-card::before {
@@ -1270,11 +1276,25 @@ body {
     }
 
     #dashboardView {
-        padding: 5rem 1.5rem 2rem 1.5rem;
+        padding: 6.5rem 1.5rem 2rem 1.5rem;
+    }
+
+    .dashboard-header {
+        margin-bottom: 2rem;
     }
 
     .greeting h1 {
         font-size: 2rem;
+    }
+
+    .tutor-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .tutor-card {
+        padding: 1.25rem;
+        margin: 0;
     }
 
     .chat-view-header {

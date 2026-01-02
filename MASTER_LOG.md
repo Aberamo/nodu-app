@@ -16,16 +16,17 @@ Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane.
 ---
 
 ## 📅 Roadmap Aggiornata
-- [x] **Fase 0:** Setup Ambiente (VSC, Git, Repo GitHub).
-- [x] **Fase 1:** Frontend Base - Dashboard con 3 card Glassmorphism.
-- [x] **Fase 1.5:** UI Upgrade - Chat Fullscreen con View Switching (Nessuna chat flottante).
-- [x] **Fase 2:** Migrazione a Flask - Struttura cartelle (`app.py`, `static`, `templates`) e script di avvio (`run.bat`).
-- [x] **Fase 3:** AI Core - Integrazione Gemini API (Modello `gemini-2.5-flash/pro`).
-- [x] **Fase 4:** Rendering Engine - Supporto Markdown (Marked.js) e LaTeX (MathJax).
-- [x] **Fase 5:** Vision & Docs - Supporto Upload Immagini e PDF (Multi-modalità).
-- [x] **Fase 6:** Brain Tuning - Implementazione prompt "Metodo ELI5" (Tutor empatico e passo-passo).
-- [x] **Fase 7:** Fullstack Core - Database (SQLite), Auth (Login/Register), History Persistente.
-- [ ] **Fase 8:** Deploy Finale (DigitalOcean/Render).
+[x] Fase 0: Setup Ambiente (VSC, Git, Repo GitHub).
+[x] Fase 1: Frontend Base - Dashboard con 3 card Glassmorphism.
+[x] Fase 1.5: UI Upgrade - Chat Fullscreen con View Switching.
+[x] Fase 2: Migrazione a Flask - Struttura cartelle standard.
+[x] Fase 3: AI Core - Integrazione Gemini API.
+[x] Fase 4: Rendering Engine - Markdown e LaTeX (MathJax).
+[x] Fase 5: Vision & Docs - Upload Immagini e PDF.
+[x] Fase 6: Brain Tuning - Prompt "Metodo ELI5".
+[x] Fase 7: Fullstack Core - Database, Auth, History.
+[x] Fase 8: Deploy Finale (Render.com + Custom Domain). 🚀
+[x] Milestone: Il sito è accessibile pubblicamente e sicuro.
 
 ## 📝 Changelog & Stato Attuale
 
@@ -76,3 +77,83 @@ Piattaforma web educativa (AI Tutor) per studenti delle superiori italiane.
 - **UX Flow:** Aggiunte pagine Login e Register. La Dashboard è ora protetta (`@login_required`).
 - **Feature:** Cronologia Chat persistente. Ricaricando la pagina, i messaggi precedenti vengono caricati dal DB.
 - **Stato:** Pronto per il Deploy. Tutte le funzionalità core (Chat, Vision, PDF, Auth) sono implementate.
+
+## 📝 Changelog & Stato Attuale
+
+**[DATA ODIE] - UI REFINEMENT & NAVIGATION**
+- **Sidebar:** Navigazione funzionante (Home, Profilo, Storico, Settings). Implementato View Switching in JS.
+- **Views:** Create viste nascoste per Profilo e Storico che appaiono al click.
+- **Bug:** Risolto conflitto `IntegrityError` su email vuote (Reset DB richiesto).
+- **Issue:** API Quota (429) limita i test estensivi, ma il frontend è pronto.
+- **Goal:** Implementare "Guest Mode" per permettere l'uso senza registrazione obbligatoria.
+
+## 📝 Changelog & Stato Attuale
+
+**[02/01/2026 ore 16:30] - PRE-DEPLOY POLISH**
+- **Refactoring UI:** Trasformazione in sito Multi-pagina (Prezzi, Come Funziona).
+- **Branding:** Logo SVG integrato (90px) e Mascotte SVG animate ovunque.
+- **Fix in corso:**
+    - Riduzione altezza Header (troppo ingombrante).
+    - Rimozione Footer dalla Dashboard (pulizia layout).
+    - Ottimizzazione Mobile (Logo e margini).
+    - Hardening Registrazione (Email obbligatoria, Conferma Password).
+- **Next Step:** Integrazione Google OAuth e Deploy su Render.
+
+## 📝 Changelog & Stato Attuale
+
+**[02/01/2026 ore 17:00] - PRE-DEPLOY FINAL POLISH**
+- **Decision:** Google Login posticipato alla v1.1.
+- **Header:** Ottimizzazione aggressiva dell'altezza (Logo ridimensionato temporaneamente).
+- **Mobile UX:**
+    - Landing: Font e margini adattati per schermi piccoli.
+    - Dashboard: Implementazione "Hamburger Menu" (Sidebar a scomparsa su mobile).
+- **Registration:** Aggiunti campi Email (required) e Conferma Password.
+- **Stato:** Codice pronto per il Deploy su Render.
+
+[02/01/2026 ore 17:00] - PRE-DEPLOY FINAL POLISH
+
+Header: Ottimizzazione aggressiva dell'altezza (Logo ridimensionato).
+
+Mobile UX: Implementazione "Hamburger Menu" (Sidebar a scomparsa).
+
+Registration: Hardening (Email obbligatoria, check password).
+
+[02/01/2026 ore 18:30] - FEEDBACK LOOP & LINUX PREP
+
+Feature Feedback: Creata pagina feedback.html collegata a Formspree per ricevere email senza backend SMTP.
+
+Header: Aggiunto link "Feedback" nella Navbar pubblica.
+
+System Prep:
+
+Creato Procfile per Gunicorn.
+
+Pulizia requirements.txt: Rimosse librerie Windows-only (pywin32, pyinstaller) per compatibilità server Linux.
+
+Update app.py: Switch automatico Database (SQLite se locale, PostgreSQL se su Render).
+
+[02/01/2026 ore 19:50] - DEPLOY SU RENDER (SUCCESS)
+
+Infrastructure:
+
+Creato Database PostgreSQL (Frankfurt).
+
+Creato Web Service Python 3 collegato a GitHub (Aberamo/nodu-app).
+
+Environment: Configurate variabili DATABASE_URL, GEMINI_API_KEY, SECRET_KEY.
+
+Database Init: Aggirato blocco Shell Free Tier tramite route temporanea /setup-database-segreto per creare le tabelle, poi rimossa per sicurezza.
+
+Status: Deploy completato con successo. App funzionante in cloud.
+
+[02/01/2026 ore 20:00] - DOMAIN & SSL (LIVE)
+
+Domain: Acquistato/Riscatto nodu-app.me su Namecheap.
+
+DNS: Configuarati record A e CNAME per puntare a Render.
+
+Verification: Render ha verificato la proprietà del dominio.
+
+Security: Certificato SSL (HTTPS) in fase di generazione automatica (Let's Encrypt).
+
+Stato Finale: V 1.0 ONLINE 🟢

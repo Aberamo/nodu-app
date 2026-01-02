@@ -360,7 +360,8 @@
 
     <!-- Login Status for JavaScript -->
     <script>
-        const IS_USER_LOGGED_IN = {{ 'true' if is_logged_in else 'false' }};
+        // @ts-nocheck - Jinja2 template syntax
+        const IS_USER_LOGGED_IN = {% if is_logged_in %}true{% else %}false{% endif %};
         const USERNAME = "{{ username }}";
     </script>
 
