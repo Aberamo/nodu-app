@@ -341,6 +341,14 @@ def get_history():
             'status': 'success'
         })
 
+# --- CODICE TEMPORANEO PER CREARE IL DATABASE SU RENDER ---
+@app.route('/setup-database-segreto')
+def setup_database():
+    with app.app_context():
+        db.create_all()
+    return "Fatto! Tabelle create nel Database. Ora puoi cancellare questa route."
+# ---------------------------------------------------------
+
 # ========================================
 # DATABASE INITIALIZATION
 # ========================================
