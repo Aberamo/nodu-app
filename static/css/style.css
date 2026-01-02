@@ -671,7 +671,7 @@ body {
     width: 150px;
 }
 
-/* Chat View Messages Area */
+/* Chat View Messages Area - DESKTOP OPTIMIZED */
 .chat-view-messages {
     flex: 1;
     padding: 2.5rem;
@@ -684,21 +684,30 @@ body {
     margin: 0 auto;
 }
 
+/* Scrollbar stilizzata (sottile e scura) */
 .chat-view-messages::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 .chat-view-messages::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
 }
 
 .chat-view-messages::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    transition: background 0.2s ease;
 }
 
 .chat-view-messages::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Firefox scrollbar */
+.chat-view-messages {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) rgba(0, 0, 0, 0.2);
 }
 
 .message {
@@ -745,7 +754,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     padding: 0.85rem 1.1rem;
-    max-width: 75%;
+    max-width: 70%; /* Desktop: bolle più strette per migliore leggibilità */
 }
 
 .message-content p {
@@ -763,50 +772,96 @@ body {
     border-color: rgba(0, 212, 255, 0.2);
 }
 
-/* Chat View Input Area */
+/* Chat View Input Area - DESKTOP OPTIMIZED */
 .chat-view-input {
     padding: 2rem 2.5rem;
-    background: var(--glass-bg);
+    background: rgba(10, 14, 26, 0.85);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
-    border-top: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .chat-input-wrapper {
     display: flex;
     gap: 1rem;
-    align-items: flex-end;
-    max-width: 900px;
+    align-items: center;
+    max-width: 800px;
     margin: 0 auto;
 }
 
+/* Container unificato per Desktop */
+.chat-input-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 0.75rem 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.chat-input-container:focus-within {
+    border-color: var(--neon-green);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.08);
+}
+
+/* Attach Button dentro il container */
+.btn-attach {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.6);
+    flex-shrink: 0;
+    border-radius: 10px;
+}
+
+.btn-attach:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-attach svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Input textarea al centro */
 .chat-input {
     flex: 1;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
+    background: transparent;
+    border: none;
+    padding: 0.5rem 0;
     color: var(--text-primary);
     font-family: var(--font-family);
     font-size: 1rem;
     resize: none;
-    max-height: 150px;
-    min-height: 52px;
+    max-height: 120px;
+    min-height: 24px;
     transition: all 0.3s ease;
     line-height: 1.5;
 }
 
 .chat-input:focus {
     outline: none;
-    border-color: var(--neon-green);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.1);
+    border: none;
+    background: transparent;
+    box-shadow: none;
 }
 
 .chat-input::placeholder {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.4);
 }
 
+/* Tasto Invio separato */
 .btn-send {
     width: 52px;
     height: 52px;
@@ -834,22 +889,6 @@ body {
 .btn-send svg {
     width: 22px;
     height: 22px;
-}
-
-/* Attach Button (Paperclip) */
-.btn-attach {
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: rgba(255, 255, 255, 0.7);
-    flex-shrink: 0;
 }
 
 .btn-attach:hover {
@@ -1345,15 +1384,79 @@ body {
         pointer-events: none;
     }
 
+    /* === CHAT VIEW MOBILE OPTIMIZATION - HIGH-END POLISH === */
+
+    /* 1. HEADER GHOST (Stile WhatsApp - Tutto ancorato a sinistra) */
     .chat-view-header {
-        padding: 1rem 1.5rem;
-        padding-left: 5rem;
+        padding: 0.75rem 1rem;
+        height: 60px;
         z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(10, 14, 26, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        justify-content: flex-start;
+    }
+
+    /* AGGRESSIVO: Nascondi menu hamburger nella chat view - TUTTE LE VARIANTI */
+    #chatView .mobile-menu-toggle,
+    .chat-view .mobile-menu-toggle,
+    #dashboardView.chat-active .mobile-menu-toggle,
+    .view-container:not(#dashboardView) .mobile-menu-toggle,
+    body:has(#chatView[style*="display: block"]) .mobile-menu-toggle,
+    body:has(#chatView:not([style*="display: none"])) .mobile-menu-toggle {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: -9999 !important;
     }
 
     .chat-view-tutor-info {
         position: static;
         transform: none;
+        gap: 12px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin: 0;
+    }
+
+    /* Avatar più piccolo su mobile */
+    .chat-view-avatar {
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .chat-view-tutor-name {
+        font-size: 1.05rem;
+        margin-bottom: 0;
+        display: block;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    /* RIMUOVI DEFINITIVAMENTE lo status dot/pallino */
+    .chat-view-status,
+    .status-dot,
+    .online-status {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    .btn-back {
+        padding: 0.5rem 0.75rem;
+        min-width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
     }
 
     .btn-back span {
@@ -1364,15 +1467,166 @@ body {
         display: none;
     }
 
+    /* 2. MESSAGGI - Bolle più larghe con spazio per input fisso */
     .chat-view-messages {
-        padding: 1.5rem;
-    }
-
-    .chat-view-input {
-        padding: 1.5rem;
+        padding: 1rem;
+        padding-bottom: 120px; /* Spazio generoso per input fisso */
     }
 
     .message-content {
         max-width: 85%;
+        padding: 0.75rem 1rem;
+    }
+
+    .message-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.75rem;
+    }
+
+    /* 3. INPUT BAR "UNIBODY" - Pillola unificata con centratura perfetta */
+    .chat-view-input {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+        background: rgba(10, 14, 26, 0.95);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        z-index: 50;
+    }
+
+    .chat-input-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    /* Contenitore "Pillola Unibody" per graffetta + input */
+    .chat-input-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        background: #2a2d3d;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 25px;
+        padding: 8px 15px;
+        transition: all 0.3s ease;
+        height: 45px;
+        min-height: 45px;
+        max-height: auto;
+    }
+
+    .chat-input-container:focus-within {
+        background: #32354a;
+        border-color: rgba(0, 255, 136, 0.3);
+        box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.1);
+    }
+
+    /* Graffetta DENTRO la pillola a sinistra */
+    .btn-attach {
+        order: 1;
+        width: 28px;
+        height: 28px;
+        background: transparent;
+        border: none;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin: 0;
+        padding: 0;
+    }
+
+    .btn-attach:active {
+        transform: scale(0.9);
+    }
+
+    .btn-attach svg {
+        width: 20px;
+        height: 20px;
+        color: rgba(255, 255, 255, 0.5);
+        display: block;
+    }
+
+    /* Input DENTRO la pillola al centro */
+    .chat-input {
+        order: 2;
+        flex: 1;
+        background: transparent;
+        border: none;
+        padding: 0 0.75rem;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin: 0;
+        min-height: 28px;
+        max-height: 100px;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+        font-family: var(--font-family);
+        resize: none;
+        line-height: 1.5;
+        vertical-align: middle;
+    }
+
+    .chat-input:focus {
+        outline: none;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .chat-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Tasto invio FUORI dalla pillola a destra */
+    .btn-send {
+        order: 3;
+        width: 45px;
+        height: 45px;
+        background: var(--gradient-green);
+        border: none;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0, 255, 136, 0.2);
+        margin: 0;
+        padding: 0;
+    }
+
+    .btn-send svg {
+        width: 18px;
+        height: 18px;
+        color: #000;
+        display: block;
+    }
+
+    .btn-send:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(0, 255, 136, 0.35);
+    }
+
+    .btn-send:active {
+        transform: scale(0.92);
+        box-shadow: 0 2px 8px rgba(0, 255, 136, 0.15);
+    }
+
+    .btn-send:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: scale(1);
     }
 }
