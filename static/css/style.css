@@ -1225,6 +1225,11 @@ body {
         --sidebar-width: 280px;
     }
 
+    body {
+        padding-top: 0;
+        overflow-x: hidden;
+    }
+
     .brand-logo {
         height: 45px;
     }
@@ -1232,11 +1237,27 @@ body {
     /* Show hamburger menu */
     .mobile-menu-toggle {
         display: flex;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 150;
+        pointer-events: auto;
     }
 
     /* Show overlay when needed */
     .sidebar-overlay {
         display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        pointer-events: none;
+    }
+
+    .sidebar-overlay.active {
+        pointer-events: auto;
     }
 
     /* Hide sidebar by default */
@@ -1249,6 +1270,7 @@ body {
         z-index: 100;
         transition: left 0.3s ease;
         padding: 2rem 1.5rem;
+        pointer-events: auto;
     }
 
     /* Show sidebar when open */
@@ -1273,33 +1295,60 @@ body {
     /* Main content takes full width */
     .main-content {
         margin-left: 0;
+        width: 100%;
+        position: relative;
+        z-index: 1;
     }
 
     #dashboardView {
-        padding: 6.5rem 1.5rem 2rem 1.5rem;
+        padding: 7rem 1.5rem 2rem 1.5rem;
+        position: relative;
+        z-index: 1;
+        pointer-events: auto;
     }
 
     .dashboard-header {
         margin-bottom: 2rem;
+        position: relative;
+        z-index: 2;
+        pointer-events: auto;
     }
 
     .greeting h1 {
         font-size: 2rem;
     }
 
+    .tutor-section {
+        position: relative;
+        z-index: 1;
+        pointer-events: auto;
+    }
+
     .tutor-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 1.25rem;
+        position: relative;
+        z-index: 1;
     }
 
     .tutor-card {
-        padding: 1.25rem;
+        padding: 1.5rem;
         margin: 0;
+        position: relative;
+        z-index: 10;
+        pointer-events: auto;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .tutor-card * {
+        pointer-events: none;
     }
 
     .chat-view-header {
         padding: 1rem 1.5rem;
         padding-left: 5rem;
+        z-index: 10;
     }
 
     .chat-view-tutor-info {

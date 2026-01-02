@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NODU.ME - Piattaforma Educativa AI{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/images/logo.ico') }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    {% block extra_css %}{% endblock %}
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-blue: #00d4ff;
+            --neon-orange: #ff6b35;
+            --dark-bg: #0a0e1a;
+            --dark-card: #131829;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background Gradients */
+        .bg-gradient {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .gradient-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--neon-green);
+            top: -300px;
+            left: -200px;
+        }
+
+        .gradient-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--neon-blue);
+            top: 50%;
+            right: -150px;
+        }
+
+        /* Sticky Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-logo {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Mobile Hamburger Toggle */
+        .mobile-nav-toggle {
+            display: none;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+
+        .mobile-nav-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-green);
+        }
+
+        .mobile-nav-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Navigation Menu - Desktop by default */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--neon-green);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--neon-green) 0%, #00cc6a 100%);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        /* Mobile Navigation Overlay */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 10;
+            background: rgba(10, 14, 26, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 5% 2rem 5%;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .footer-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--neon-green);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+            .brand-logo {
+                height: 45px;
+            }
+
+            .navbar-container {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0;
+                min-height: 65px;
+                padding: 0.75rem 5%;
+            }
+
+            /* Show hamburger on mobile */
+            .mobile-nav-toggle {
+                display: flex;
+            }
+
+            /* Show overlay when menu is open */
+            .nav-overlay {
+                display: block;
+            }
+
+            /* Navigation Menu - Mobile Slide-in */
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: rgba(10, 14, 26, 0.98);
+                backdrop-filter: blur(20px);
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 5rem 2rem 2rem 2rem;
+                transition: right 0.3s ease;
+                z-index: 999;
+                overflow-y: auto;
+                flex-direction: column;
+                gap: 0;
+                align-items: flex-start;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0;
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-size: 1.1rem;
+            }
+
+            .header-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 2rem;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-gradient gradient-1"></div>
+    <div class="bg-gradient gradient-2"></div>
+
+    <!-- Universal Header Navbar -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='assets/images/logo.svg') }}" alt="NODU.ME Logo" class="brand-logo">
+                </a>
+            </div>
+
+            <!-- Hamburger Menu Toggle (Mobile Only) -->
+            <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle Navigation">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Navigation Menu -->
+            <div class="nav-menu" id="navMenu">
+                <nav class="nav-links">
+                    <a href="{{ url_for('how_it_works') }}" class="nav-link">Come Funziona</a>
+                    <a href="{{ url_for('pricing') }}" class="nav-link">Prezzi</a>
+                    <a href="{{ url_for('feedback') }}" class="nav-link">Feedback</a>
+                </nav>
+
+                <div class="header-buttons">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Vai alla Dashboard</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-secondary">Accedi</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary">Registrati</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Mobile Menu Overlay -->
+            <div class="nav-overlay" id="navOverlay"></div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Universal Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3 class="footer-title">NODU<span style="color: var(--neon-green);">.ME</span></h3>
+                <p class="footer-description">
+                    La piattaforma educativa AI che rivoluziona il modo di studiare.
+                    Tre tutor specializzati sempre al tuo fianco.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-subtitle">Link Rapidi</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('how_it_works') }}">Come Funziona</a></li>
+                    <li><a href="{{ url_for('pricing') }}">Prezzi</a></li>
+                    <li><a href="{{ url_for('login') }}">Accedi</a></li>
+                    <li><a href="{{ url_for('feedback') }}">Feedback</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-subtitle">Contatti</h4>
+                <ul class="footer-links">
+                    <li>Email: info@nodu.me</li>
+                    <li>Supporto: supporto@nodu.me</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 NODU.ME - Tutti i diritti riservati</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileNavToggle = document.getElementById('mobileNavToggle');
+            const navMenu = document.getElementById('navMenu');
+            const navOverlay = document.getElementById('navOverlay');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const headerButtons = document.querySelectorAll('.header-buttons .btn');
+
+            if (!mobileNavToggle || !navMenu || !navOverlay) return;
+
+            // Toggle menu
+            mobileNavToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                navOverlay.classList.toggle('active');
+            });
+
+            // Close menu when clicking overlay
+            navOverlay.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                navOverlay.classList.remove('active');
+            });
+
+            // Close menu when clicking any nav link
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('active');
+                        navOverlay.classList.remove('active');
+                    }
+                });
+            });
+
+            // Close menu when clicking any button
+            headerButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('active');
+                        navOverlay.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
