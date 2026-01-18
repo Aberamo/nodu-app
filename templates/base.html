@@ -94,10 +94,16 @@
         }
 
         .brand-logo {
-            height: 60px;
+            height: 50px;
+            max-height: 50px;
             width: auto;
             object-fit: contain;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.05);
         }
 
         /* Mobile Hamburger Toggle */
@@ -174,8 +180,12 @@
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.02);
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
         }
 
         .btn-secondary {
@@ -187,6 +197,11 @@
         .btn-secondary:hover {
             border-color: var(--neon-green);
             color: var(--neon-green);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0);
         }
 
         /* Mobile Navigation Overlay */
@@ -282,7 +297,8 @@
         /* Responsive - Mobile */
         @media (max-width: 768px) {
             .brand-logo {
-                height: 45px;
+                height: 40px;
+                max-height: 40px;
             }
 
             .navbar-container {
